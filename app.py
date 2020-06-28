@@ -377,7 +377,7 @@ def create_user_answers(current_user, surveyid):
 
 @app.route('/check/login')
 @auth_check
-def check_login():
+def check_login(current_user):
     """
     Checks if user is logged in
     """
@@ -387,7 +387,7 @@ def check_login():
 @app.route('/check/login/admin')
 @auth_check
 @admin_check
-def check_login_admin():
+def check_login_admin(current_user):
     """
     Checks if user is logged in and is admin
     """
