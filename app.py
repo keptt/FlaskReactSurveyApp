@@ -326,7 +326,7 @@ def has_user_done_survey(current_user, surveyid):
         # from the survey (in our case take first question) then user has answered all of the questions since user cannot submit unfinished servey
         first_question_id = survey.questions[0].obj_id
         if UserAnswer.query.filter_by(question_id=first_question_id, user_id=current_user.obj_id).first():
-            return {'done' : 'true'}
+            return {'success' : 'true'}
     else:
         return {'messsage' : 'Survey does not exist'}
 
@@ -372,7 +372,26 @@ def create_user_answers(current_user, surveyid):
     else:
         return {'message' : 'Survey does not exist'}
 
-    return {'done' : len(answers_text_dict)}
+    return {'success' : len(answers_text_dict)}
+
+
+@app.route('/check/login')
+@auth_check
+def check_login():
+    """
+    Checks if user is logged in
+    """
+    return {'success' : 'true'}
+
+
+@app.route('/check/login/admin')
+@auth_check
+@admin_check
+def check_login_admin():
+    """
+    Checks if user is logged in and is admin
+    """
+    return {'success' : 'true'}
 
 
 @app.route('/login')
