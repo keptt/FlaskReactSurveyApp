@@ -15,7 +15,7 @@ BROODMASTER_PASSWORD = environ.get(BROODMASTER_PASSWORD_ENV_VAR) or 'default'
 db.create_all()
 
 # create initial admin broodmaster
-user = User(username='broodmaster', password=generate_password_hash(BROODMASTER_PASSWORD, method='sha256'), email='contact_broodmaster@gmail.com', is_admin=True)
+user = User(username='broodmaster', password=generate_password_hash(BROODMASTER_PASSWORD, method='sha256'), email='contact_broodmaster@gmail.com')
 
 db.session.add(user)
 db.session.commit()
