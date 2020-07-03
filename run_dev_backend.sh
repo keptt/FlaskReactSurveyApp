@@ -1,9 +1,9 @@
-python -m venv env
-. env/Scripts/activate
+python3 -m venv env
+. flask-backend/env/Scripts/activate
 
-pip install -r flask-backend/requirements.txt
+pip3 install -r flask-backend/requirements.txt
 
-python flask-backend/db_init.py
-python flask-backend/app.py
+python3 flask-backend/db_init.py
+python3 flask-backend/app.py
 
 

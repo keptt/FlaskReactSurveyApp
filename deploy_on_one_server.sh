@@ -9,9 +9,9 @@ cd ..
 cp deployment-template-files/app.py flask-backend/
 cp deployment-template-files/app_init.py flask-backend/
 
-. env/scripts/activate
+. flask-backend/env/scripts/activate
 
-pip install gunicorn
+pip3 install gunicorn
 
 cd flask-backend/
 
