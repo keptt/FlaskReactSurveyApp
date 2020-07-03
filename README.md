@@ -52,7 +52,7 @@ Now you can skipp all other steps just by running `sh` script `run_dev.sh` in th
 
 To install python dependencies, use the command:
 ```
-    pip3 install -r requirements.txt
+    pip3 install -r flask-backend/requirements.txt
 ```
 
 As an optional step it is better to create python virtual environment before running previous command

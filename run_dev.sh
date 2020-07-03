@@ -3,7 +3,7 @@ chmod -R 755 "$(pwd)"
 python -m venv env
 . env/scripts/activate
 
-pip3 install -r requirements.txt
+pip3 install -r flask-backend/requirements.txt
 
 npm install
 
