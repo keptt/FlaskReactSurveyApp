@@ -1,15 +1,19 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+/*
+    Display single question added to the survey. Component also issues a delete question signal to the perent
+    Child of SurveyAddFrame.
+*/
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 
 export default class SurveyQuesion extends Component {
     render() {
         return (
             <div>
-                <p>
+                <div className="list-group-item" style={{border: "none"}}>
+                    <button type="button" className="close" data-dismiss="alert" onClick={this.props.delQuestion.bind(this, this.props.questionId)}><span>&times;</span></button>
                     { this.props.question }
-                    <button style={btnStyle} onClick={this.props.delQuestion.bind(this, this.key)}>x</button>
-                </p>
+                </div>
             </div>
         )
     }
@@ -17,18 +21,7 @@ export default class SurveyQuesion extends Component {
 
 
 SurveyQuesion.propTypes = {
-    question: PropTypes.string.isRequired
-}
-
-
-const btnStyle = {
-    background:     '#ff0000'
-    , color:        '#fff'
-    , border:       'none'
-    , padding:      '5px 8px'
-    , borderRadius: '50%'
-    , cursor:       'pointer'
-    , float:        'right'
-}
-
+    question:       PropTypes.string.isRequired
+    , delQuestion:  PropTypes.func.isRequired
+};
 

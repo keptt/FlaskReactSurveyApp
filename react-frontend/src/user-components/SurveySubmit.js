@@ -1,26 +1,27 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+/*
+    Component showed when user is about to submit their response to a survey
+ */
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 
 export default class SurveySubmit extends Component {
     submitAndContinue = (e) => {
-        // check if all questions are answered
-        // POST to BACKEND this.props.questions
-        this.props.nextStep(e);
+        this.props.submitAnswers() && this.props.nextStep(e);
     }
 
 
     render() {
         return (
-            <div>
-                <h1>Submit the survey</h1>
-                <h2>You are about to submit the survey. You won't be abel
+            <div class="container">
+                <h1 style={{marginTop: '30px', marginBottom: '30px'}}>Submit the survey</h1>
+                <p>You are about to submit the survey. You won't be abel
                     to change your answers afterwords. You can still make
                     amendmens to you answers. If you are ready to submit click
                     the button below:
-                </h2>
-                <button onClick={this.submitAndContinue}>Submit</button><br />
-                <button onClick={this.props.prevStep}>Back</button>
+                </p>
+                <button className="btn btn-lg btn-success" type="button" style={btnStyle}  onClick={this.submitAndContinue}>Submit</button><br />
+                <button className="btn btn-secondary" type="button" style={btnStyle}  onClick={this.props.prevStep}>Back</button>
             </div>
         )
     }
@@ -28,7 +29,14 @@ export default class SurveySubmit extends Component {
 
 
 SurveySubmit.propTypes = {
-    nextStep:       PropTypes.func.isRequired
-    , prevStep:     PropTypes.func.isRequired
-    , questions:    PropTypes.array.isRequired
-}
+    nextStep:        PropTypes.func.isRequired
+    , prevStep:      PropTypes.func.isRequired
+    , questions:     PropTypes.array.isRequired
+    , submitAnswers: PropTypes.func.isRequired
+};
+
+
+
+const btnStyle= {
+    marginBottom: '20px'
+};

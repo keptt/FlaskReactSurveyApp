@@ -1,8 +1,17 @@
-import React, { Component } from 'react'
-import SurveyPage from './SurveyPage'
-import SurveySubmit from './SurveySubmit'
-import SurveySuccessfulSubmition from './SurveySuccessfulSubmition'
-import SurveyBegin from './SurveyBegin'
+/*
+    Component wraps around components needed to make up an interactive process of user responding to a Survey
+*/
+import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types'
+
+import SurveyPage from './SurveyPage';
+import SurveySubmit from './SurveySubmit';
+import SurveySuccessfulSubmition from './SurveySuccessfulSubmition';
+import SurveyBegin from './SurveyBegin';
+import SurveyNotFound from './SurveyNotFound';
+import LoadingScreen from '../layout/LoadingScreen';
+import config from '../config';
 
 
 export default class SurveyFrame extends Component {
@@ -10,49 +19,15 @@ export default class SurveyFrame extends Component {
 
     state = {
         step: 0
-        , questions: [
-            {
-                obj_id : 1
-                , survey_id : 1
-                , text : 'what?'
-                , answer : ''
-            }
-            , {
-                obj_id : 2
-                , survey_id : 1
-                , text : 'what2?'
-                , answer : ''
-            }, {
-                obj_id : 3
-                , survey_id : 1
-                , text : 'what3?'
-                , answer : ''
-            }, {
-                obj_id : 4
-                , survey_id : 1
-                , text : 'what4?'
-                , answer : ''
-            }, {
-                obj_id : 5
-                , survey_id : 1
-                , text : 'what5?'
-                , answer : ''
-            }, {
-                obj_id : 6
-                , survey_id : 1
-                , text : 'what6?'
-                , answer : ''
-            }, {
-                obj_id : 7
-                , survey_id : 1
-                , text : 'what7?'
-                , answer : ''
-            }
-        ]
+        , surveyName: ''
+        , surveyDescription: ''
+        , surveyId: null
+        , questions: []
+        , isLoading: false
     }
 
 
-    // Go to next step
+    // Go to next step. This func is passed to child components
     nextStep = () => {
         const { step } = this.state;
         this.setState({
@@ -61,7 +36,7 @@ export default class SurveyFrame extends Component {
     }
 
 
-    // Go to next step
+    // Go to previous step. This func is passed to child components
     prevStep = () => {
         const { step } = this.state;
         this.setState({
@@ -72,8 +47,6 @@ export default class SurveyFrame extends Component {
 
     //Handle change
     handleChange = input => e => {
-        console.log(e);
-        console.log(input);
         this.setState({[input] : e.target.value});
     }
 
@@ -84,7 +57,7 @@ export default class SurveyFrame extends Component {
             questions.map((question) => {
                     // if answer has question id, it means it is answer to that question
                     if (answers[question.obj_id]) {
-                        question.answer = answers[question.obj_id].text
+                        question.answer = answers[question.obj_id].text;
                     }
                     return question;
                 }
@@ -94,28 +67,100 @@ export default class SurveyFrame extends Component {
     }
 
 
+    submitAnswers = () => {
+        const {questions} = this.state;
+
+        const answers = {answers : {}};
+
+        for (let i = 0; i < questions.length; ++i) {
+            if (!questions[i].answer) { // if answer is empty
+                this.props.setErrorMsg('Some of the answers are empty!');
+                return 0;
+            }
+
+            if (questions[i].answer.length > config.maxAnswerLenght) {
+                this.props.setErrorMsg(`Answer ${i + 1} contains more than ${config.maxAnswerLenght} characters!`);
+                return 0;
+            }
+
+            answers.answers[questions[i].obj_id] = questions[i].answer;
+        }
+
+        this.setState({isLoading: true});
+        this.props.setIsLoading(true);       // fire loading screen since request might take some time
+
+        return axios.post(`${config.apiUrl}/answers/sr/${this.props.match.params.hashkey}`, answers)
+        .then(res => {this.props.setIsLoading(false);
+                    this.setState({isLoading: false});
+            })
+        .catch(error => {
+            this.props.setIsLoading(false);
+            this.setState({isLoading: false});
+
+            console.log(error);
+            console.log(error.response ? (error.response.data || error.message) : error.message);
+            this.props.setErrorMsg(error.response ? (error.response.data || error.message) : error.message); // if we have more response object, then we get more meaningful message, output standart error msg otherwise
+        });
+    }
+
+
+    componentDidMount() {
+        this.props.setIsLoading(true);          // pass setIsLoading(true) to a parent component to indicate the need to flush any error msgs inside ErrorBox
+        this.setState({isLoading: true});       // fire loading screen since request might take some time
+
+        axios.get(`${config.apiUrl}/questions/sr/hsh/${this.props.match.params.hashkey}`)
+        .then(res => {
+            if (!res.data.questions) this.setState({step: -1});
+            for (let i = 0; i < res.data.questions.length; ++i) { // add answer attribute to question list (for storing user answer later)
+                res.data.questions[i].answer = '';
+            }
+            return res
+        })
+        .then(res =>
+                this.setState({surveyId:   res.data.survey_id       // store data received from backend locally
+                    , surveyName:          res.data.name
+                    , surveyDescription:   res.data.description
+                    , questions:           res.data.questions
+                })
+        )
+        .then(res => {this.props.setIsLoading(false);
+                        this.setState({isLoading: false});
+            })
+        .catch(error => {
+            this.props.setIsLoading(false);
+            this.setState({isLoading: false});
+
+            console.log(error);
+            console.log(error.response ? (error.response.data || error.message) : error.message);
+            this.props.setErrorMsg(error.response ? (error.response.data || error.message) : error.message); // if we have response object, then we get more meaningful message, output standart error msg otherwise
+        });
+    }
+
+
     render() {
-        const { step } = this.state;
-        const { questions } = this.state;
+        const { step, isLoading, questions } = this.state;
 
-
-        // console.log('hello world');
-
-        if (step <= 0) {
-            return <SurveyBegin nextStep={this.nextStep} />
+        if (step < 0) {
+            return (<SurveyNotFound />);
+        }
+        else if (step === 0) {
+            return isLoading ? (<LoadingScreen />) : (<SurveyBegin nextStep={this.nextStep}
+                                                                    surveyName={this.state.surveyName}
+                                                                    surveyDescription={this.state.surveyDescription}
+                                                                    qtyOfQuestions={this.state.questions.length}
+                                                        />);
         }
         else if (step === Math.ceil(questions.length / 3) + 1) { // if step is equals then max length of pages with questions + 1 (thing that user sees after all questions answered)
-            console.log('step bigger', step);
-            return <SurveySubmit nextStep={this.nextStep}
-                                prevStep={this.prevStep}
-                                questions={this.state.questions}
-                                />
+            return isLoading ? (<LoadingScreen />) : (<SurveySubmit nextStep={this.nextStep}
+                                                                    prevStep={this.prevStep}
+                                                                    questions={this.state.questions}
+                                                                    submitAnswers={this.submitAnswers}
+                                                        />);
         }
         else if (step > Math.ceil(questions.length / 3) + 1) { // if step is higher then max length of pages with questions + 1 (thing that user sees after submiting)
-            console.log('step bigger', step);
-            return <SurveySuccessfulSubmition />
+            return (<SurveySuccessfulSubmition />);
         }
-        else {
+        else {                  // display the main component that holds question-answer forms
             return (
                 <SurveyPage nextStep={this.nextStep}
                             prevStep={this.prevStep}
@@ -124,8 +169,14 @@ export default class SurveyFrame extends Component {
                             step={step}
                             mergeAnswers={this.mergeAnswers}
                 />
-            )
+            );
         }
 
     }
 }
+
+
+SurveyFrame.propTypes = {
+    setErrorMsg:      PropTypes.func.isRequired
+    , setIsLoading: PropTypes.func.isRequired
+};
