@@ -62,7 +62,7 @@ export default class SurveyResults extends Component {
         case false:
             return isLoading ? (<LoadingScreen />) : (
                 <React.Fragment>
-                    <div class="text-right">
+                    <div className="text-right">
                         <button type="button" className="btn btn-success" onClick={this.changeState} style={buttonStyle}>JSON</button>
                     </div>
                     <div style={centerOnPageStyle}>
