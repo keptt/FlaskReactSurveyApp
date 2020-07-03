@@ -1,0 +1,18 @@
+server {
+    listen: 80; # In real production consider using 443 with the proper ssl
+    root <ENTER FULL PATH TO THE FRONTEND DIR>/build; # define root dir
+    index index.html    # define index page
+
+    # try searching for files "<pathname>" and "<pathname>/". If none are found return 404 error
+    location / {
+        try_files $uri $uri =404;
+    }
+
+    location /api {
+        include proxy_params;
+        proxy_pass http://localhost:5000; # forward any requests with urls that start with /api to the backend api server running on port 5000 locally
+    }
+}
+
+
+
