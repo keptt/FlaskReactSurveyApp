@@ -44,7 +44,8 @@ After someone has responded to a survey, admin can see the results of the survey
 To run application in development mode you will need:
 
 ### Step 1: Have python3, pip3 and nodejs installed
-Now you can skipp all other steps just by running `sh` script `run_dev.sh` in the root of the folder or you can follow along with the manual set up process
+Now you can skip all other steps just by running `sh` scripts `run_dev_backend.sh` and `run_dev_frontend.sh` in separate terminal sessions.
+Or you can follow along with the manual set up process
 
 ### Step 2: Git clone this repository and cd inside of repository folder
 
