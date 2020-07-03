@@ -55,8 +55,8 @@ class Login extends React.Component {
             )
             .catch(error => {
                 console.log(error);
-                console.log(error.response.data || error.message);
-                this.setState({ error: error.response.data || error.message, loading: false })
+                console.log(error.response ? (error.response.data || error.message) : error.message);
+                this.setState({ error: error.response ? (error.response.data || error.message) : error.message, loading: false });
             });
     };
 
