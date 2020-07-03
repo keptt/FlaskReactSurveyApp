@@ -1,7 +1,7 @@
 """
     Database creation and initialization steps; Has to run before running flask rest api - app.py - in order to set things up
 """
-from app import db, User
+from app_init import db, User
 from os import environ
 from werkzeug.security import generate_password_hash
 
