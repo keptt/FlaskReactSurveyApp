@@ -16,8 +16,8 @@ export default function About() {
                 If you encountered any issues while using our service, please don't hesitate to contact us.
             </p>
             <ul className="list-group">
-                <input className="list-group-item form-control" value="Contact email: contact_support@surveysupport.com" readonly />
-                <input className="list-group-item form-control" value="Contact phone: 000-12-70-01" readonly />
+                <input className="list-group-item form-control" value="Contact email: contact_support@surveysupport.com" readOnly />
+                <input className="list-group-item form-control" value="Contact phone: 000-12-70-01" readOnly />
             </ul>
         </div>
     )
