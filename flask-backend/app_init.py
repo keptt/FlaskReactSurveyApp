@@ -31,7 +31,7 @@ CORS(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # config database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get(SECRET_KEY_ENV_VAR) or uuid.uuid4().hex
 
