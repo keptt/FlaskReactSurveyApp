@@ -2,7 +2,7 @@
 
 #### Create and share your surveys!
 
-Application provides web ui to respond and stores survey responses from anonymous users and also ui for creating surveys and reading survey results.
+Application provides web ui for responding to surveys and stores survey responses from anonymous users. Functionality for creating surveys and reading survey results is also provided.
 
 ## How it works
 
@@ -20,7 +20,7 @@ After that admin gets redirected to the home page where all surveys are displaye
 
 Admin adds survey by clicking "Add Survey" button.
 
-There admin adds initial general like survey name and descriotion and also creates a list of questions assigned to the current survey.
+There admin adds general information like survey name and descriotion and also creates a list of questions assigned to the current survey.
 
 Then clicks "Confirm & Continue" button.
 
@@ -32,7 +32,7 @@ Admin can email this link to any user.
 
 ### Step 4:
 
-After user (responder) received and follow a link, they are presented with the page where they can respond to the survey.
+After user (responder) received and followed a link, they are presented with the page where they can respond to the survey.
 
 ### Step 5:
 
@@ -50,7 +50,6 @@ Or you can follow along with the manual set up process
 ### Step 2: Git clone this repository and cd inside of repository folder
 
 ### Step 3: Install python dependencies
-
 To install python dependencies, use the command:
 ```
     pip3 install -r flask-backend/requirements.txt
@@ -59,8 +58,8 @@ To install python dependencies, use the command:
 As an optional step it is better to create python virtual environment before running previous command
 Create virtual environment by running:
 ```
-    python3 -m venv env
-    . env/scripts/activate
+    python3 -m venv flask-backend/env
+    . flask-backend/env/scripts/activate
 ```
 
 ### Step 4: Install node modules
@@ -68,7 +67,6 @@ Create virtual environment by running:
 ```
     npm install
 ```
-
 
 ### Step 5: Create db
 In this case for db we use simple sqlite, to initialize it, `cd` into `falsk-backend` directory
@@ -105,29 +103,29 @@ Naviget to <http://localhost:3000> in your browser
 
 *Please note that deployment scripts are not yet thoroughly tested*
 
-*Also note that described deployment is used for UNIX systems. If you are on Windows, you might want to try using waitress or similar instead of Gunicorn*
+*Also note that described deployment is used for UNIX systems. If you are on Windows, you might want to try using Waitress or similar instead of Gunicorn*
 
-*Also note that the deployment builds below are not refined enough and robust so they are more suitable for reference then real procduction deployment. You will need to perform much more configuration in real deployment*
+*Also note that the deployment builds below are not refined enough and not robust so they are more suitable for reference then real procduction deployment. You will need to perform much more configuration in real deployment*
 
 To emulate the real deployment process and deploy this project to a more or less real server you may chose one of two approaches:
 
 * deploy to a single server where you backend runs and make your backend serve static react files from build directory (Not recommended)
-* deploy frontend and backend separately. Expose frontend server to the public and make backend run on the local server, using frontend server as a reverse proxy to forward requests to the api (Recommended way)
+* deploy frontend and backend separately. Expose frontend server to the public and make backend run on the local server, using frontend server as a reverse proxy to forward requests to the api (Recommended)
 
 **To deploy your application using the first approach do the following:**
 
 *Note that as a simple example we will be using Gunicorn server here (for UNIX only)*
 
-* Step 1: Make sure you have created pyrhon virtual environment from Quickstart
+* Step 1: Make sure you have created python virtual environment from Quickstart steps
 
-* Step 2: Run `deploy_on_one_server.sh`
+* Step 2: Run `deploy_on_one_server.sh` (You might also want to backup files `app_init.py` and `app.py` from `flask-backend` directory since `sh` script wil modify them)
 
 * Step 3: Go to <http://localhost:3000> to see if it worked
 
 
 **To deploy your application using the first approach do the following:**
 
-* Step 1: Make sure you have created pyrhon virtual environment from Quickstart
+* Step 1: Make sure you have created python virtual environment from Quickstart steps
 
 * Step 2: Go to `deployment-template-files` folder and open files `my-surveys-app.nginx` and `my-surveys-app.service`. Change all occurences of "<SOME TEXT>" with what "SOME TEXT" is actually asking you
 
