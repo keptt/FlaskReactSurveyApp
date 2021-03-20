@@ -6,7 +6,7 @@ Flask-Cors==3.0.8
 flask-marshmallow==0.13.0
 Flask-SQLAlchemy==2.4.3
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 jwt==1.0.0
 MarkupSafe==1.1.1
 marshmallow==3.6.1
